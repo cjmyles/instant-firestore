@@ -1,0 +1,34 @@
+{
+  "name": "instant-firestore",
+  "version": "0.0.2",
+  "description": "Firestore wrapper methods",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha --require babel-core/register --require babel-polyfill",
+    "build": "babel ./src -d ./lib",
+    "build:watch": "babel -w ./src -d ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JSJInvestments/instant-firestore.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Craig Myles (https://instantfeedback.com.au)",
+  "license": "MIT",
+  "dependencies": {
+    "instant-utils": "0.0.1",
+    "instant-firestore-utils": "0.0.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-runtime": "^6.26.0",
+    "mocha": "^5.2.0"
+  }
+}
