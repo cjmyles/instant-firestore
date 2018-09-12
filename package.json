@@ -1,6 +1,6 @@
 {
   "name": "instant-firestore",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Firestore wrapper methods",
   "main": "lib/index.js",
   "scripts": {
@@ -19,8 +19,7 @@
   "author": "Craig Myles (https://instantfeedback.com.au)",
   "license": "MIT",
   "dependencies": {
-    "instant-utils": "0.0.1",
-    "instant-firestore-utils": "0.0.4"
+    "instant-utils": "0.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
