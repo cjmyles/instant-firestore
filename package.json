@@ -1,6 +1,6 @@
 {
   "name": "instant-firestore",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Firestore wrapper methods",
   "main": "lib/index.js",
   "scripts": {

@@ -14,7 +14,7 @@ export default class FirestoreCollection extends Default {
     super();
     Default.bind(this, ['create', 'createMany', 'find', 'findOne']);
     this.db = db;
-    this.colRef = colRef;
+    this.colRef = typeof colRef === 'string' ? db.collection(colRef) : colRef;
   }
 
   /**
@@ -65,8 +65,9 @@ export default class FirestoreCollection extends Default {
   async find(query = {}, options = {}) {
     try {
       // Convert the query into an array of queries for Firestore
-      // @todo enable operators other than '=='
-      const queries = Object.keys(query).map(k => [k, '==', query[k]]);
+      const queries = Array.isArray(query)
+        ? query
+        : Object.keys(query).map(k => [k, '==', query[k]]);
       // Baseline query reference
       let queryRef = this.colRef;
       // Add the queries to the query reference
@@ -74,8 +75,10 @@ export default class FirestoreCollection extends Default {
         queryRef = queryRef.where(query[0], query[1], query[2]);
       });
       // Order if necessary
-      if (options.orderBy) {
+      if (options.orderBy && typeof options.orderBy === 'string') {
         queryRef = queryRef.orderBy(options.orderBy);
+      } else if (options.orderBy) {
+        queryRef = queryRef.orderBy(...options.orderBy);
       }
       // Apply a limit if necessary
       if (options.limit) {
