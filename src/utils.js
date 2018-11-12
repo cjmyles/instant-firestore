@@ -11,7 +11,16 @@ export function removeUnpopulatedReferences(data) {
         typeof data[key] === 'object' &&
         typeof data[key].get === 'function'
       ) {
-        delete data[key];
+        try {
+          data[key] = {
+            path: `${data[key]._path.segments[0]}/${
+              data[key]._path.segments[1]
+            }`,
+            id: data[key]._path.segments[1],
+          };
+        } catch (error) {
+          data[key] = 'Firestore Reference';
+        }
       }
     });
   } catch (error) {
@@ -21,35 +30,14 @@ export function removeUnpopulatedReferences(data) {
 }
 
 /**
- * Deserialize path
- * @param {object} data Document data
- * @param {string} path Path to populate
- */
-export function deserializePath(data, path, db) {
-  try {
-    data[path] =
-      typeof data[path] === 'string' && data[path].indexOf('/') !== -1
-        ? db.doc(data[path])
-        : data[path];
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
-/**
  * Deserialize references
  * @param {object} data Document data
- * @param {string} path Path to populate
+ * @param {string|array} paths Path to populate
+ * @param {object} db Firestore Database instance
  */
-export function deserializeReferences(data, db) {
+export function deserializeReference(data, path, db) {
   try {
-    Object.entries(data).forEach(([key, value]) => {
-      data[key] =
-        typeof data[key] === 'string' && data[key].indexOf('/') !== -1
-          ? db.doc(data[key])
-          : data[key];
-    });
+    data[path] = db.doc(data[path]);
   } catch (error) {
     console.error(error);
     throw error;
@@ -60,15 +48,14 @@ export function deserializeReferences(data, db) {
  * Deserialize paths
  * @param {object} data Document data
  * @param {string|array} paths Paths to populate
+ * @param {object} db Firestore Database instance
  */
 export async function deserialize(data, paths, db) {
   try {
     if (Array.isArray(paths)) {
-      await asyncForEach(paths, path => deserializePath(data, path, db));
-    } else if (typeof paths === 'boolean' && paths) {
-      await deserializeReferences(data, db);
+      paths.forEach(path => deserializeReference(data, path, db));
     } else {
-      await deserializePath(data, paths, db);
+      deserializeReference(data, paths, db);
     }
   } catch (error) {
     console.error(error);
@@ -92,13 +79,19 @@ export async function populateReference(data, key, path, references = {}) {
         DocumentReference: data[key],
       };
       const doc = await data[key].get();
-      data[key] = await serializeDocument(
-        doc,
-        {
-          populate: path,
-        },
-        references[key]
-      );
+      if (doc.exists) {
+        data[key] = await serializeDocument(
+          doc,
+          {
+            populate: path,
+          },
+          references[key]
+        );
+      } else {
+        console.warn(
+          `Could not populate reference '${key}' as document does not exist`
+        );
+      }
     } else {
       // Key is not a Firestore Document Reference or has already been populated so defer
       await populatePath(data[key], path, references[key]);
@@ -120,7 +113,7 @@ export async function populateSubcollection(data, key, paths, docRef) {
   try {
     data[key] = await getSubcollection(docRef, key);
   } catch (error) {
-    // console.error(error);
+    console.warn(error);
     // throw error;
   }
 }
@@ -138,7 +131,7 @@ export async function populatePath(data, path, references) {
 
     if (data[key]) {
       await populateReference(data, key, path, references);
-    } else {
+    } else if (references && references.DocumentReference) {
       await populateSubcollection(
         data,
         key,
@@ -212,13 +205,16 @@ export async function serializeSnapshot(snapshot, options = {}) {
   try {
     let data = [];
     if (snapshot && !snapshot.empty) {
-      data = await asyncMap(snapshot.docs, doc =>
-        serializeDocument(doc, options)
-      );
+      data = await asyncMap(snapshot.docs, doc => {
+        let references = {
+          DocumentReference: doc.ref,
+        };
+        return serializeDocument(doc, options, references);
+      });
     }
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
@@ -236,7 +232,7 @@ export async function getDocument(docRef, options) {
     const doc = await docRef.get();
     return await serializeDocument(doc, options, references);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
@@ -251,7 +247,7 @@ export async function getCollection(colRef, options) {
     const snapshot = await colRef.get();
     return await serializeSnapshot(snapshot, options);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }

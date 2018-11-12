@@ -1,5 +1,5 @@
 import Default from './Default';
-import { getDocument, deserializeReferences } from '../utils';
+import { getDocument, deserialize } from '../utils';
 
 // Note the difference between `Firestore Document` and `document` in the comments - the latter is a serialized representation of the former
 
@@ -24,7 +24,9 @@ export default class FirestoreCollection extends Default {
    */
   async create(attributes, options = {}) {
     try {
-      deserializeReferences(attributes, this.db);
+      if (options.deserialize) {
+        deserialize(attributes, options.deserialize, this.db);
+      }
       return await this.docRef.set(attributes);
     } catch (error) {
       console.error(error);
@@ -52,7 +54,9 @@ export default class FirestoreCollection extends Default {
    */
   async update(attributes, options = {}) {
     try {
-      deserializeReferences(attributes, this.db);
+      if (options.deserialize) {
+        deserialize(attributes, options.deserialize, this.db);
+      }
       await this.docRef.update(attributes);
       return await this.find(options);
     } catch (error) {
