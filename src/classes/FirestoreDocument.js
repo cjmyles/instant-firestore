@@ -3,7 +3,7 @@ import { getDocument, deserialize } from '../utils';
 
 // Note the difference between `Firestore Document` and `document` in the comments - the latter is a serialized representation of the former
 
-export default class FirestoreCollection extends Default {
+export default class FirestoreDocument extends Default {
   /**
    * Constructor
    * @param {object} db Firestore Database instance

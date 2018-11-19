@@ -1,6 +1,6 @@
 import Default from './Default';
 import { asyncForEach } from 'instant-utils';
-import { getCollection, deserialize } from '../utils';
+import { getCollection, getDocument, deserialize } from '../utils';
 
 // Note the difference between `Firestore Document` and `document` in the comments - the latter is a serialized representation of the former
 
@@ -30,7 +30,9 @@ export default class FirestoreCollection extends Default {
       }
       const docRef = await this.colRef.add(attributes);
       if (docRef.id) {
-        return docRef.id;
+        return options.getDocument
+          ? await getDocument(docRef, options)
+          : docRef.id;
       }
     } catch (error) {
       console.error(error);
