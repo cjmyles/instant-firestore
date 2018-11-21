@@ -1,6 +1,6 @@
 # Instant Firestore
 
-Firestore wrapper methods.
+Firestore wrapper to ease common tasks, including creating, finding, updating and deleting documents.
 
 _**Please note:** This is an unofficial Firestore package, designed to assist with common Firestore tasks_
 
