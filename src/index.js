@@ -1,5 +1,5 @@
 export * from './utils';
-import FirestoreCollection from './classes/FirestoreCollection';
-import FirestoreDocument from './classes/FirestoreDocument';
-export { FirestoreCollection };
-export { FirestoreDocument };
+
+export { default as FirestoreCollection } from './classes/FirestoreCollection';
+export { default as FirestoreDocument } from './classes/FirestoreDocument';
+export { default as FirestoreRepository } from './classes/FirestoreRepository';

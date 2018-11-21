@@ -10,6 +10,9 @@ export default class FirestoreDocument extends Default {
    * @param {string} docRef Firestore Document Reference
    */
   constructor(db, docRef) {
+    if (!db) throw new Error('Required Firestore database reference missing.');
+    if (!docRef)
+      throw new Error('Required Firestore document reference missing.');
     super();
     Default.bind(this, ['create', 'find', 'update', 'delete']);
     this.db = db;
@@ -29,7 +32,6 @@ export default class FirestoreDocument extends Default {
       }
       return await this.docRef.set(attributes);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -42,7 +44,6 @@ export default class FirestoreDocument extends Default {
     try {
       return await getDocument(this.docRef, options);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -60,7 +61,6 @@ export default class FirestoreDocument extends Default {
       await this.docRef.update(attributes);
       return await this.find(options);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -72,7 +72,6 @@ export default class FirestoreDocument extends Default {
     try {
       return await this.docRef.delete();
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }

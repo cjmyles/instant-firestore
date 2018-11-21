@@ -11,8 +11,11 @@ export default class FirestoreCollection extends Default {
    * @param {string} colRef Firestore Collection Reference
    */
   constructor(db, colRef) {
+    if (!db) throw new Error('Required Firestore database reference missing.');
+    if (!colRef)
+      throw new Error('Required Firestore collection reference missing.');
     super();
-    Default.bind(this, ['create', 'createMany', 'find', 'findOne']);
+    Default.bind(this, ['create', 'createMany', 'find', 'findOne', 'findById']);
     this.db = db;
     this.colRef = typeof colRef === 'string' ? db.collection(colRef) : colRef;
   }
@@ -35,7 +38,6 @@ export default class FirestoreCollection extends Default {
           : docRef.id;
       }
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -56,7 +58,6 @@ export default class FirestoreCollection extends Default {
       batch.commit();
       return ids;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -91,7 +92,6 @@ export default class FirestoreCollection extends Default {
       // Perform the get request
       return await getCollection(queryRef, options);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -108,7 +108,19 @@ export default class FirestoreCollection extends Default {
         return items[0];
       }
     } catch (error) {
-      console.error(error);
+      throw error;
+    }
+  }
+
+  /**
+   * Find document by id
+   * @param {string} id Document id
+   * @param {object} options Options
+   */
+  async findById(id, options = {}) {
+    try {
+      return await getDocument(this.colRef.doc(id), options);
+    } catch (error) {
       throw error;
     }
   }
