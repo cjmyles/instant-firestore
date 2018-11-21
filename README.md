@@ -19,20 +19,74 @@ $ npm install instant-firestore
 **ES Modules**
 
 ```javascript
-import { findById } from 'instant-firestore';
+import { FirestoreRepository } from 'instant-firestore';
 
-// Do stuff with findById or any of the other methods you import
+// Pass your firestore instance and a collection reference to the constructor
+const fr = new FirestoreRepository(db, db.collection('your-collection-name'));
+
+// Simple findById example
+const findById = async id => {
+  try {
+    const data await = fr.findById(id);
+    return data;
+  } catch(error) {
+    throw error;
+  }
+}
+
 ```
 
 **CommonJS Modules**
 
 ```javascript
-const if = require('instant-firestore');
+var FirestoreRepository = require('instant-firestore').FirestoreRepository;
 
-// Do stuff with methods
+// Pass your firestore instance and a collection reference to the constructor
+var fr = new FirestoreRepository(db, db.collection('your-collection-name'));
+
+// Simple findById example
+async function findById(id) {
+  try {
+    var data await = fr.findById(id);
+    return data;
+  } catch(error) {
+    throw error;
+  }
+}
 ```
 
-## Functions
+## API
+
+### create(attributes, options)
+
+Create a Firestore document.
+
+#### Arguments
+
+attributes (object): The document attributes
+options (object): Options
+
+### Returns
+
+id (string): The document id
+
+**Note:** If `getDocument` is present in the options object and set to true, then the document data will be returned instead of the id
+
+### createMany(array)
+
+### find(query)
+
+### findOne(query)
+
+### findById(id)
+
+### createWithId(id, attributes)
+
+### update(id, attributes)
+
+### delete(id)
+
+### updateOrCreate(query, attributes)
 
 ## Running Tests
 
