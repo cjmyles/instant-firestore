@@ -70,7 +70,9 @@ export default class FirestoreDocument extends Default {
    */
   async delete() {
     try {
-      return await this.docRef.delete();
+      const id = this.docRef.id;
+      await this.docRef.delete();
+      return { id };
     } catch (error) {
       throw error;
     }

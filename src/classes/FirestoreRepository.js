@@ -40,7 +40,8 @@ export default class FirestoreRepository extends Default {
    */
   async create(attributes, options = {}) {
     try {
-      return await this.collection.create(attributes, options);
+      await this.collection.create(attributes, options);
+      return attributes;
     } catch (error) {
       throw error;
     }
@@ -164,7 +165,7 @@ export default class FirestoreRepository extends Default {
       const item = await this.findOne(query, options);
       return item
         ? await this.update(item.id, attributes, options)
-        : await this.create(attributes, { ...options, getDocument: true });
+        : await this.create(attributes, options);
     } catch (error) {
       throw error;
     }
