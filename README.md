@@ -1,20 +1,37 @@
 # Instant Firestore
 
-Firestore wrapper to ease common tasks, including creating, finding, updating and deleting documents.
+Firebase Firestore wrapper to ease common tasks, including creating, finding, updating and deleting documents.
 
-_**Please note:** This is an unofficial Firestore package, designed to assist with common Firestore tasks_
+_**Please note:** This is an unofficial Firestore package, designed to assist with common Firestore tasks._
 
-## Features
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API](#api)
+  - [create](#create)
+  - [createMany](#createMany)
+  - [find](#find)
+  - [findOne](#findOne)
+  - [findById](#findById)
+  - [createWithId](#createWithId)
+  - [update](#update)
+  - [delete](#delete)
+  - [updateOrCreate](#updateOrCreate)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
-You can install this wrapper by running the following in your project:
+You can install this package using npm:
 
 ```bash
-$ npm install instant-firestore
+$ npm install instant-firestore-utils
 ```
 
 ## Usage
+
+Here is a quick example to get you started:
 
 **ES Modules**
 
@@ -24,16 +41,8 @@ import { FirestoreRepository } from 'instant-firestore';
 // Pass your firestore instance and a collection reference to the constructor
 const fr = new FirestoreRepository(db, db.collection('your-collection-name'));
 
-// Simple findById example
-const findById = async id => {
-  try {
-    const data await = fr.findById(id);
-    return data;
-  } catch(error) {
-    throw error;
-  }
-}
-
+const data await = fr.findById('12345');
+console.log(data);
 ```
 
 **CommonJS Modules**
@@ -44,59 +53,45 @@ var FirestoreRepository = require('instant-firestore').FirestoreRepository;
 // Pass your firestore instance and a collection reference to the constructor
 var fr = new FirestoreRepository(db, db.collection('your-collection-name'));
 
-// Simple findById example
-async function findById(id) {
-  try {
-    var data await = fr.findById(id);
-    return data;
-  } catch(error) {
-    throw error;
-  }
-}
+fr.findById('12345').then(function(data) {
+  console.log(data);
+});
 ```
 
 ## API
 
-### create(attributes, options)
+### create
 
 Create a Firestore document.
 
 #### Arguments
 
-attributes (object): The document attributes
-options (object): Options
+`attributes (Object)`: The document attributes.\
+`options (Object):` Options.
 
 ### Returns
 
-id (string): The document id
+`(Object)`: The serialized document
 
-**Note:** If `getDocument` is present in the options object and set to true, then the document data will be returned instead of the id
+### createMany
 
-### createMany(array)
+### find
 
-### find(query)
+### findOne
 
-### findOne(query)
+### findById
 
-### findById(id)
+### createWithId
 
-### createWithId(id, attributes)
+### update
 
-### update(id, attributes)
+### delete
 
-### delete(id)
+### updateOrCreate
 
-### updateOrCreate(query, attributes)
+## Contributing
 
-## Running Tests
-
-To run the tests, clone the repository and install the dependencies:
-
-```bash
-git clone https://github.com/JSJInvestments/instant-firestore.git
-cd instant-firestore && npm i
-npm run test
-```
+We'd greatly appreciate any [contribution](CONTRIBUTING.md) you make.
 
 ## License
 

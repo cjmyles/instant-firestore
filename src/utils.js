@@ -89,7 +89,7 @@ export async function populateReference(data, key, path, references = {}) {
         );
       } else {
         console.warn(
-          `Could not populate reference '${key}' as document does not exist`
+          `Could not populate reference '${key}' as document reference does not exist`
         );
       }
     } else {

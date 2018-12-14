@@ -33,9 +33,10 @@ export default class FirestoreCollection extends Default {
       }
       const docRef = await this.colRef.add(attributes);
       if (docRef.id) {
-        return options.getDocument
-          ? await getDocument(docRef, options)
-          : docRef.id;
+        return {
+          ...attributes,
+          id: docRef.id,
+        };
       }
     } catch (error) {
       throw error;

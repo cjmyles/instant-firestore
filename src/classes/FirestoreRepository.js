@@ -40,8 +40,7 @@ export default class FirestoreRepository extends Default {
    */
   async create(attributes, options = {}) {
     try {
-      await this.collection.create(attributes, options);
-      return attributes;
+      return await this.collection.create(attributes, options);
     } catch (error) {
       throw error;
     }

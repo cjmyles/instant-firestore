@@ -20,7 +20,7 @@ export default class FirestoreDocument extends Default {
   }
 
   /**
-   * Create a Firestore Document with an id
+   * Create a Firestore Document
    * @param {object} attributes Document attributes
    * @param {string} id Document id
    * @param {object} options Options
@@ -30,7 +30,9 @@ export default class FirestoreDocument extends Default {
       if (options.deserialize) {
         deserialize(attributes, options.deserialize, this.db);
       }
-      return await this.docRef.set(attributes);
+      // We have a docRef so we implicitly have an id
+      await this.docRef.set(attributes);
+      return await getDocument(this.docRef, options);
     } catch (error) {
       throw error;
     }
@@ -59,7 +61,7 @@ export default class FirestoreDocument extends Default {
         deserialize(attributes, options.deserialize, this.db);
       }
       await this.docRef.update(attributes);
-      return await this.find(options);
+      return await getDocument(this.docRef, options);
     } catch (error) {
       throw error;
     }
