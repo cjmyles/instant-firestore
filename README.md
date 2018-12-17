@@ -26,7 +26,7 @@ _**Please note:** This is an unofficial Firestore package, designed to assist wi
 You can install this package using npm:
 
 ```bash
-$ npm install instant-firestore-utils
+$ npm install instant-firestore
 ```
 
 ## Usage
