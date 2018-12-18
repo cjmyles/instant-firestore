@@ -1,7 +1,7 @@
 {
   "name": "instant-firestore",
   "version": "1.0.8",
-  "description": "Firebase Firestore wrapper to ease common tasks, including creating, finding, updating and deleting documents.",
+  "description": "Firebase Firestore ORM to ease common tasks, such as creating, finding, updating and deleting documents.",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha --require babel-core/register --require babel-polyfill",
