@@ -1,6 +1,6 @@
 # Instant Firestore
 
-Firebase Firestore wrapper to ease common tasks, including creating, finding, updating and deleting documents.
+Firebase Firestore ORM to ease common tasks, such as creating, finding, updating and deleting documents.
 
 _**Please note:** This is an unofficial Firestore package, designed to assist with common Firestore tasks._
 

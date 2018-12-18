@@ -1,5 +1,5 @@
+import { getDocument, deserialize } from 'instant-firestore-utils';
 import Default from './Default';
-import { getDocument, deserialize } from '../utils';
 
 // Note the difference between `Firestore Document` and `document` in the comments - the latter is a serialized representation of the former
 
@@ -74,7 +74,7 @@ export default class FirestoreDocument extends Default {
     try {
       const id = this.docRef.id;
       await this.docRef.delete();
-      return { id };
+      return this.docRef.exists;
     } catch (error) {
       throw error;
     }

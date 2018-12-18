@@ -1,6 +1,10 @@
-import Default from './Default';
 import { asyncForEach } from 'instant-utils';
-import { getCollection, getDocument, deserialize } from '../utils';
+import {
+  getCollection,
+  getDocument,
+  deserialize,
+} from 'instant-firestore-utils';
+import Default from './Default';
 
 // Note the difference between `Firestore Document` and `document` in the comments - the latter is a serialized representation of the former
 
@@ -33,10 +37,7 @@ export default class FirestoreCollection extends Default {
       }
       const docRef = await this.colRef.add(attributes);
       if (docRef.id) {
-        return {
-          ...attributes,
-          id: docRef.id,
-        };
+        return await this.findById(docRef.id, options);
       }
     } catch (error) {
       throw error;
@@ -50,14 +51,14 @@ export default class FirestoreCollection extends Default {
    */
   async createMany(arr, options = {}) {
     try {
-      let ids = [];
+      let docs = [];
       const batch = this.db.batch();
       await asyncForEach(arr, async attributes => {
-        const id = await this.create(attributes, options);
-        ids.push(id);
+        const doc = await this.create(attributes, options);
+        docs.push(doc);
       });
       batch.commit();
-      return ids;
+      return docs;
     } catch (error) {
       throw error;
     }
