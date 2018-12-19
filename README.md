@@ -1,8 +1,8 @@
 # Instant Firestore
 
-Firebase Firestore ORM to ease common tasks, such as creating, finding, updating and deleting documents.
+[Firebase Cloud Firestore](https://firebase.google.com/docs/firestore/) ORM to ease common tasks such as creating, finding, updating and deleting documents.
 
-_**Please note:** This is an unofficial Firestore package, designed to assist with common Firestore tasks._
+_**Please note:** This is an unofficial Firestore package, part of the [`instant`](https://cjmyles.github.io/instant/) suite of tools._
 
 ## Table of Contents
 
